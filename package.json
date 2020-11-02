@@ -1,0 +1,24 @@
+{
+  "name": "reshuffle-twitter-mentions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanblee/reshuffle-twitter-mentions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alanblee/reshuffle-twitter-mentions/issues"
+  },
+  "homepage": "https://github.com/alanblee/reshuffle-twitter-mentions#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "reshuffle-twitter-connector": "0.0.1"
+  }
+}
