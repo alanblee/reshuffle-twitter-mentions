@@ -19,6 +19,7 @@
   "homepage": "https://github.com/alanblee/reshuffle-twitter-mentions#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "reshuffle": "^1.0.0",
     "reshuffle-twitter-connector": "0.0.1"
   }
 }
