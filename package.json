@@ -20,6 +20,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "reshuffle": "^1.0.0",
+    "reshuffle-monday-connector": "0.0.1",
     "reshuffle-twitter-connector": "0.0.1"
   }
 }
