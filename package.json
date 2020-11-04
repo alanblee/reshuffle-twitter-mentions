@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/alanblee/reshuffle-twitter-mentions#readme",
   "dependencies": {
+    "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "reshuffle": "^1.0.0",
     "reshuffle-monday-connector": "0.0.1",
