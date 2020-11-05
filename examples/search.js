@@ -26,67 +26,60 @@ const { MondayConnector } = require("reshuffle-monday-connector");
         });
       })
       .then(async (col) => {
-        // const newItems = await monday.sdk().api(
-        // `mutation mutation ($boardId: Int!, $itemName: String!, $columnValues: JSON!)
-        //   {create_item (board_id: $boardId, item_name: $itemName, column_values: $columnValues)
-        //   {
-        //     id}
-        //   }`,
-        // {
-        //   boardId: BOARD_ID,
-        //   itemName: JSON.stringify(tweetInfo.id),
-        //   columnValues: JSON.stringify({
-        //     tweet17: tweetInfo.text,
-        //     text: tweetInfo.user.screen_name,
-        //     created_at: {
-        //       date: new Date(Date.parse(tweetInfo.created_at))
-        //         .toISOString()
-        //         .split("T")[0],
-        //     },
-        //   }),
+        // const body = {
+        //   query: `
+        // mutation ($boardId: Int!, $itemName: String!, $columnValues: JSON!) {
+        //   create_item (
+        //     board_id: $boardId,
+        //     item_name: $itemName,
+        //     column_values: $columnValues
+        //   ) {
+        //     id
+        //   }
         // }
-
-        // );
-        // console.log(newItems);
-        // });
-        const body = {
-          query: `
-        mutation ($boardId: Int!, $itemName: String!, $columnValues: JSON!) {
-          create_item (
-            board_id: $boardId,
-            item_name: $itemName,
-            column_values: $columnValues
-          ) {
-            id
-          }
-        }
-        `,
-          variables: {
-            boardId: BOARD_ID,
-            itemName: JSON.stringify(tweetInfo.id),
-            columnValues: JSON.stringify({
-              [col[1]]: tweetInfo.text,
-              [col[2]]: tweetInfo.user.screen_name,
-              [col[3]]: {
-                date: new Date(Date.parse(tweetInfo.created_at))
-                  .toISOString()
-                  .split("T")[0],
-              },
-            }),
+        // `,
+        //   variables: {
+        //     boardId: BOARD_ID,
+        //     itemName: JSON.stringify(tweetInfo.id),
+        //     columnValues: JSON.stringify({
+        //       [col[1]]: tweetInfo.text,
+        //       [col[2]]: tweetInfo.user.screen_name,
+        //       [col[3]]: {
+        //         date: new Date(Date.parse(tweetInfo.created_at))
+        //           .toISOString()
+        //           .split("T")[0],
+        //       },
+        //     }),
+        //   },
+        // };
+        // axios
+        //   .post(`https://api.monday.com/v2`, body, {
+        //     headers: {
+        //       Authorization: process.env.MONDAY_TOKEN,
+        //     },
+        //   })
+        //   .catch((err) => {
+        //     console.error("** error **", err.data);
+        //   })
+        //   .then((res) => {
+        //     console.log("** success **", res.data);
+        //   });
+        const testVars = JSON.stringify({
+          [col[1]]: tweetInfo.text,
+          [col[2]]: tweetInfo.user.screen_name,
+          [col[3]]: {
+            date: new Date(Date.parse(tweetInfo.created_at))
+              .toISOString()
+              .split("T")[0],
           },
-        };
-        axios
-          .post(`https://api.monday.com/v2`, body, {
-            headers: {
-              Authorization: process.env.MONDAY_TOKEN,
-            },
-          })
-          .catch((err) => {
-            console.error("** error **", err.data);
-          })
-          .then((res) => {
-            console.log("** success **", res.data);
-          });
+        });
+
+        const testQuery = await monday.createItem(
+          BOARD_ID,
+          JSON.stringify(tweetInfo.id),
+          testVars
+        );
+        console.log(testQuery);
       });
   };
 
