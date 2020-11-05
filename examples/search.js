@@ -17,53 +17,13 @@ const { MondayConnector } = require("reshuffle-monday-connector");
   // creates new item on specific board. board ID comes from url in browser
   const createItems = async (tweetInfo) => {
     const column = await monday
-      .sdk()
-      .api(`query {boards (ids: ${BOARD_ID}) { columns { id title type } }}`)
+      .getColumn(BOARD_ID)
       .then((res) => {
-        // console.log(res.data.boards[0].columns);
-        return res.data.boards[0].columns.map((col) => {
+        return res.boards[0].columns.map((col) => {
           return col.id;
         });
       })
       .then(async (col) => {
-        // const body = {
-        //   query: `
-        // mutation ($boardId: Int!, $itemName: String!, $columnValues: JSON!) {
-        //   create_item (
-        //     board_id: $boardId,
-        //     item_name: $itemName,
-        //     column_values: $columnValues
-        //   ) {
-        //     id
-        //   }
-        // }
-        // `,
-        //   variables: {
-        //     boardId: BOARD_ID,
-        //     itemName: JSON.stringify(tweetInfo.id),
-        //     columnValues: JSON.stringify({
-        //       [col[1]]: tweetInfo.text,
-        //       [col[2]]: tweetInfo.user.screen_name,
-        //       [col[3]]: {
-        //         date: new Date(Date.parse(tweetInfo.created_at))
-        //           .toISOString()
-        //           .split("T")[0],
-        //       },
-        //     }),
-        //   },
-        // };
-        // axios
-        //   .post(`https://api.monday.com/v2`, body, {
-        //     headers: {
-        //       Authorization: process.env.MONDAY_TOKEN,
-        //     },
-        //   })
-        //   .catch((err) => {
-        //     console.error("** error **", err.data);
-        //   })
-        //   .then((res) => {
-        //     console.log("** success **", res.data);
-        //   });
         const testVars = JSON.stringify({
           [col[1]]: tweetInfo.text,
           [col[2]]: tweetInfo.user.screen_name,
