@@ -27,35 +27,47 @@ const { MondayConnector } = require("reshuffle-monday-connector");
       })
       .then(async (col) => {
         // const newItems = await monday.sdk().api(
-        //   `mutation {create_item (board_id: ${BOARD_ID}, item_name: \"${
-        //     tweetInfo.id
-        //   }\", column_values:
-        //       \"{
-        //         \\\"${col[1]}\\\":\\\"${tweetInfo.text.replace(/\n/g, "")}\\\",
-        //         \\\"${col[2]}\\\":\\\"${tweetInfo.user.screen_name}\\\",
-        //         \\\"${col[3]}\\\":\\\"{\\\"date\\\":\\\"2019 - 01 - 20\\\"}\\\"
-        //       }\") {id}}`
+        // `mutation mutation ($boardId: Int!, $itemName: String!, $columnValues: JSON!)
+        //   {create_item (board_id: $boardId, item_name: $itemName, column_values: $columnValues)
+        //   {
+        //     id}
+        //   }`,
+        // {
+        //   boardId: BOARD_ID,
+        //   itemName: JSON.stringify(tweetInfo.id),
+        //   columnValues: JSON.stringify({
+        //     tweet17: tweetInfo.text,
+        //     text: tweetInfo.user.screen_name,
+        //     created_at: {
+        //       date: new Date(Date.parse(tweetInfo.created_at))
+        //         .toISOString()
+        //         .split("T")[0],
+        //     },
+        //   }),
+        // }
+
         // );
-        //   console.log(newItems);
+        // console.log(newItems);
+        // });
         const body = {
           query: `
-          mutation ($boardId: Int!,, $itemName: String!, $columnValues: JSON!) {
-            create_item (
-              board_id: $boardId,
-              item_name: $itemName,
-              column_values: $columnValues
-            ) {
-              id
-            }
+        mutation ($boardId: Int!, $itemName: String!, $columnValues: JSON!) {
+          create_item (
+            board_id: $boardId,
+            item_name: $itemName,
+            column_values: $columnValues
+          ) {
+            id
           }
-          `,
+        }
+        `,
           variables: {
             boardId: BOARD_ID,
             itemName: JSON.stringify(tweetInfo.id),
             columnValues: JSON.stringify({
-              tweet17: tweetInfo.text,
-              text: tweetInfo.user.screen_name,
-              created_at: {
+              [col[1]]: tweetInfo.text,
+              [col[2]]: tweetInfo.user.screen_name,
+              [col[3]]: {
                 date: new Date(Date.parse(tweetInfo.created_at))
                   .toISOString()
                   .split("T")[0],
