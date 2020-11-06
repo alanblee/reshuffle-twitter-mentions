@@ -11,7 +11,7 @@ const { MondayConnector } = require("reshuffle-monday-connector");
     customerSecret: process.env.TWITTER_CUSTOMER_SECRET,
   });
   const monday = new MondayConnector(app, { token: process.env.MONDAY_TOKEN });
-  const BOARD_ID = process.env.MONDAY_BOARD_ID;
+  const BOARD_ID = Number(process.env.MONDAY_BOARD_ID);
 
   const tweetsCache = {};
 
