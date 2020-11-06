@@ -1,5 +1,4 @@
 require("dotenv").config();
-const axios = require("axios");
 const { Reshuffle } = require("reshuffle");
 const { TwitterConnector } = require("reshuffle-twitter-connector");
 const { MondayConnector } = require("reshuffle-monday-connector");
