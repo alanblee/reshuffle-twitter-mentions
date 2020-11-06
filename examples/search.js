@@ -11,11 +11,12 @@ const { MondayConnector } = require("reshuffle-monday-connector");
     customerSecret: process.env.TWITTER_CUSTOMER_SECRET,
   });
   const monday = new MondayConnector(app, { token: process.env.MONDAY_TOKEN });
-  const BOARD_ID = 832275321;
+  const BOARD_ID = process.env.MONDAY_BOARD_ID;
+
   const tweetsCache = {};
 
-  // creates new item on specific board. board ID comes from url in browser
   const createItems = async (tweetInfo) => {
+    // NOTE - getColumns currently does not return the column id on live - PR up to add this in
     const column = await monday
       .getColumn(BOARD_ID)
       .then((res) => {
@@ -33,7 +34,7 @@ const { MondayConnector } = require("reshuffle-monday-connector");
               .split("T")[0],
           },
         });
-
+        // NOTE - createItem currently does not allow column values to be added on live - PR up to add this in
         const testQuery = await monday.createItem(
           BOARD_ID,
           JSON.stringify(tweetInfo.id),
@@ -43,12 +44,13 @@ const { MondayConnector } = require("reshuffle-monday-connector");
       });
   };
 
+  // Checks to see if any tweets are on the board to prevent duplicates to be added
   (async () => {
     const board = await monday.getBoard(BOARD_ID);
     board.boards[0].items.forEach(async (item) => {
       const itemName = await monday.getItem(Number(item.id));
-      if (!tweetsCache[Number(itemName.items[0].name)]) {
-        tweetsCache[Number(itemName.items[0].name)] = { fetched: true };
+      if (!tweetsCache[itemName.items[0].name]) {
+        tweetsCache[itemName.items[0].name] = { fetched: true };
       }
     });
   })().catch(console.error);
