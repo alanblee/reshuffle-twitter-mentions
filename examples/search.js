@@ -15,25 +15,22 @@ const { MondayConnector } = require("reshuffle-monday-connector");
   const tweetsCache = {};
 
   const createItems = async (tweetInfo) => {
-    // NOTE - getColumns currently does not return the column id on live - PR up to add this in
-    const column = await monday
+    monday
       .getColumn(BOARD_ID)
       .then((res) => {
-        return res.boards[0].columns.map((col) => {
-          return col.id;
-        });
+        return res.boards[0].columns.map(({ id }) => id);
       })
-      .then(async (col) => {
+      .then(async (id) => {
         const testVars = JSON.stringify({
-          [col[1]]: tweetInfo.text,
-          [col[2]]: tweetInfo.user.screen_name,
-          [col[3]]: {
+          [id[1]]: tweetInfo.text,
+          [id[2]]: tweetInfo.user.screen_name,
+          [id[3]]: {
             date: new Date(Date.parse(tweetInfo.created_at))
               .toISOString()
               .split("T")[0],
           },
         });
-        // NOTE - createItem currently does not allow column values to be added on live - PR up to add this in
+
         const testQuery = await monday.createItem(
           BOARD_ID,
           JSON.stringify(tweetInfo.id),
