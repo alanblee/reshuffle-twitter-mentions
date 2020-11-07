@@ -8,7 +8,7 @@ For full documentation on connectors:
     
 [Monday Connector](https://github.com/reshufflehq/reshuffle-monday-connector)
 
-## Installation Instructions
+## Instructions
 
 Run the following in your shell of choice:
 
