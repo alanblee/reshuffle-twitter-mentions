@@ -42,16 +42,24 @@ const { MondayConnector } = require("reshuffle-monday-connector");
 
   // Checks to see if any tweets are on the board to prevent duplicates to be added
   (async () => {
-    const board = await monday.getBoard(BOARD_ID);
-    board.boards[0].items.forEach(async (item) => {
-      const itemName = await monday.getItem(Number(item.id));
-      if (!tweetsCache[itemName.items[0].name]) {
-        tweetsCache[itemName.items[0].name] = { fetched: true };
+    const boardItems = await monday.getBoardItems(BOARD_ID);
+
+    for (let id in boardItems.items) {
+      if (!tweetsCache[boardItems.items[id].name]) {
+        tweetsCache[boardItems.items[id].name] = { fetched: true };
       }
-    });
+    }
+
+    // const board = await monday.getBoard(BOARD_ID);
+    // board.boards[0].items.forEach(async (item) => {
+    //   const itemName = await monday.getItem(Number(item.id));
+    //   if (!tweetsCache[itemName.items[0].name]) {
+    //     tweetsCache[itemName.items[0].name] = { fetched: true };
+    //   }
+    // });
   })().catch(console.error);
 
-  twitter.on({ search: "@reshuffleHQ" }, async (event, app) => {
+  twitter.on({ search: "biden" }, async (event, app) => {
     for (const tweet of event.tweets) {
       if (!tweetsCache[tweet.id]) {
         tweetsCache[tweet.id] = {
