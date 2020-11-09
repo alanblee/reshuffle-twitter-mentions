@@ -18,18 +18,17 @@ const { MondayConnector } = require("reshuffle-monday-connector");
     monday
       .getColumn(BOARD_ID)
       .then((res) => {
-        return res.boards[0].columns.map(({ id }) => id);
+        return res.boards[0].columns.map(({ title }) => title);
       })
-      .then(async (id) => {
-        const testVars = JSON.stringify({
-          [id[1]]: tweetInfo.text,
-          [id[2]]: tweetInfo.user.screen_name,
-          [id[3]]: {
-            date: new Date(Date.parse(tweetInfo.created_at))
+      .then(async (title) => {
+        const testObj = {
+          [title[1]]: () => tweetInfo.text,
+          [title[2]]: () => tweetInfo.user.screen_name,
+          [title[3]]: () =>
+            new Date(Date.parse(tweetInfo.created_at))
               .toISOString()
               .split("T")[0],
-          },
-        });
+        };
 
         const testQuery = await monday.createItem(
           BOARD_ID,
@@ -49,14 +48,6 @@ const { MondayConnector } = require("reshuffle-monday-connector");
         tweetsCache[boardItems.items[id].name] = { fetched: true };
       }
     }
-
-    // const board = await monday.getBoard(BOARD_ID);
-    // board.boards[0].items.forEach(async (item) => {
-    //   const itemName = await monday.getItem(Number(item.id));
-    //   if (!tweetsCache[itemName.items[0].name]) {
-    //     tweetsCache[itemName.items[0].name] = { fetched: true };
-    //   }
-    // });
   })().catch(console.error);
 
   twitter.on({ search: "biden" }, async (event, app) => {
