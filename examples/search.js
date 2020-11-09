@@ -9,7 +9,10 @@ const { MondayConnector } = require("reshuffle-monday-connector");
     customerKey: process.env.TWITTER_CUSTOMER_KEY,
     customerSecret: process.env.TWITTER_CUSTOMER_SECRET,
   });
-  const monday = new MondayConnector(app, { token: process.env.MONDAY_TOKEN });
+  const monday = new MondayConnector(app, {
+    token: process.env.MONDAY_TOKEN,
+    baseURL: "https://localhost:8000",
+  });
   const BOARD_ID = Number(process.env.MONDAY_BOARD_ID);
 
   const tweetsCache = {};
@@ -50,7 +53,7 @@ const { MondayConnector } = require("reshuffle-monday-connector");
     }
   })().catch(console.error);
 
-  twitter.on({ search: "biden" }, async (event, app) => {
+  twitter.on({ search: "@ReshuffleHQ" }, async (event, app) => {
     for (const tweet of event.tweets) {
       if (!tweetsCache[tweet.id]) {
         tweetsCache[tweet.id] = {

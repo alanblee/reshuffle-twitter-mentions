@@ -21,7 +21,7 @@
     "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "reshuffle": "^1.0.0",
-    "reshuffle-monday-connector": "0.0.1",
+    "reshuffle-monday-connector": "0.0.5",
     "reshuffle-twitter-connector": "0.0.1"
   }
 }
