@@ -33,7 +33,7 @@ const { MondayConnector } = require("reshuffle-monday-connector");
         const testQuery = await monday.createItem(
           BOARD_ID,
           JSON.stringify(tweetInfo.id),
-          testVars
+          testObj
         );
         console.log(testQuery);
       });
